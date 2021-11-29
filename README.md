@@ -161,7 +161,6 @@ bash ./scripts/train_BERT.sh <GPU_IDS>  \
 
 To evaluate a model on ScanObjectNN, simply run:
 ```
-
 bash ./scripts/test_BERT.sh <GPU_IDS>\
     --config cfgs/ScanObjectNN_models/PointTransformer_hardest.yaml \
     --ckpts <path> \
