@@ -1,0 +1,5 @@
+NAME: ModelNetFewShot
+DATA_PATH: data/ModelNetFewshot
+N_POINTS: 8192
+NUM_CATEGORY: 40
+USE_NORMALS: FALSE

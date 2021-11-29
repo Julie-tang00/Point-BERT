@@ -1,0 +1,48 @@
+optimizer : {
+  type: AdamW,
+  kwargs: {
+  lr : 0.0005, 
+  weight_decay : 0.0005
+}}
+
+scheduler: {
+  type: CosLR,
+  kwargs: {
+    epochs: 300,
+    initial_epochs : 10,
+    warming_up_init_lr: 0.00005
+}}
+temp: {
+  start : 1,
+  target: 0.0625,
+  ntime: 100000 
+}
+
+kldweight: {
+  start : 0,
+  target: 0.1,
+  ntime: 100000
+}
+
+dataset : {
+  train : { _base_: cfgs/dataset_configs/ShapeNet-55.yaml, 
+            others: {subset: 'train', npoints: 1024}},
+  val : { _base_: cfgs/dataset_configs/ShapeNet-55.yaml, 
+            others: {subset: 'test', npoints: 1024}},
+  test : { _base_: cfgs/dataset_configs/ShapeNet-55.yaml, 
+            others: {subset: 'test', npoints: 1024}}}
+model : {
+  NAME: DiscreteVAE, 
+  group_size: 32, 
+  num_group: 64, 
+  encoder_dims: 256,
+  num_tokens: 8192,
+  tokens_dims: 256, 
+  decoder_dims: 256, 
+}
+
+total_bs : 64
+step_per_update : 1
+max_epoch : 300
+
+consider_metric: CDL1
