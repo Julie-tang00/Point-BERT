@@ -4,7 +4,7 @@
 
 Created by [Xumin Yu](https://yuxumin.github.io/)\*, [Lulu Tang](https://github.com/lulutang0608)\*, [Yongming Rao](https://raoyongming.github.io/)\*, [Tiejun Huang](http://www.ai.pku.edu.cn/info/1139/1243.htm), [Jie Zhou](https://scholar.google.com/citations?user=6a79aPwAAAAJ&hl=en&authuser=1), [Jiwen Lu](https://scholar.google.com/citations?user=TN8uDQoAAAAJ&hl=en&authuser=1)
 
-[[arXiv]]() [[Project Page]](https://point-bert.ivg-research.xyz/) [[Models]](#pretrained-models)
+[[arXiv]](https://arxiv.org/abs/2111.14819) [[Project Page]](https://point-bert.ivg-research.xyz/) [[Models]](#pretrained-models)
 
 This repository contains PyTorch implementation for __Point-BERT:Pre-Training 3D Point Cloud Transformers with Masked Point Modeling__.
 
