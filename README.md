@@ -8,7 +8,7 @@ Created by [Xumin Yu](https://yuxumin.github.io/)\*, [Lulu Tang](https://github.
 
 This repository contains PyTorch implementation for __Point-BERT:Pre-Training 3D Point Cloud Transformers with Masked Point Modeling__.
 
-Point-BERT is a novel paradigm for learning Transformers to generalize the concept of BERT onto 3D point cloud. Following BERT, we devise a Masked Point Modeling (MPM) task to pre-train point cloud Transformers. Specifically, we first divide a point cloud into several local patches, and a point cloud Tokenizer is devised via a discrete Variational AutoEncoder (dVAE) to generate discrete point tokens containing meaningful local information. Then, we randomly mask some patches of input point clouds and feed them into the backbone Transformer. The pre-training objective is to recover the original point tokens at the masked locations under the supervision of point tokens obtained by the Tokenizer.
+Point-BERT is a new paradigm for learning Transformers to generalize the concept of BERT onto 3D point cloud. Inspired by BERT, we devise a Masked Point Modeling (MPM) task to pre-train point cloud Transformers. Specifically, we first divide a point cloud into several local patches, and a point cloud Tokenizer is devised via a discrete Variational AutoEncoder (dVAE) to generate discrete point tokens containing meaningful local information. Then, we randomly mask some patches of input point clouds and feed them into the backbone Transformer. The pre-training objective is to recover the original point tokens at the masked locations under the supervision of point tokens obtained by the Tokenizer.
 
 ![intro](fig/pointbert.png)
 
@@ -85,7 +85,7 @@ bash ./scripts/test.sh <GPU_IDS> \
     --exp_name <name>
 ```
 
-### Point-BERT pre-train
+### Point-BERT pre-training
 To pre-train the Point-BERT models on ShapeNet, simply run:
 (complete the `ckpt` in `cfgs/Mixup_models/Point-BERT.yaml` first )
 ```
@@ -96,7 +96,7 @@ bash ./scripts/dist_train_BERT.sh <NUM_GPU> <port>\
 ```
 *val_freq* controls the frequence to evaluate the Transformer on ModelNet40 with LinearSVM.
 
-### Downstream finutuning
+### Fine-tuning on downstream tasks
 We finetune our Point-BERT on 4 downstream tasks: Classfication on ModelNet40, Few-shot learning on ModelNet40, Transfer learning on ScanObjectNN and Part segmentation on ShapeNetPart.
 
 #### ModelNet40
