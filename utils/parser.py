@@ -53,6 +53,11 @@ def get_args():
         default=False, 
         help = 'training modelnet from scratch')
     parser.add_argument(
+        '--label_smoothing', 
+        action='store_true', 
+        default=False, 
+        help = 'use label smoothing loss trick')
+    parser.add_argument(
         '--mode', 
         choices=['easy', 'median', 'hard', None],
         default=None,

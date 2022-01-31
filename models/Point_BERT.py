@@ -152,11 +152,27 @@ class PointTransformer(nn.Module):
     def build_loss_func(self):
         self.loss_ce = nn.CrossEntropyLoss()
     
-    def get_loss_acc(self, ret, gt):
-        loss = self.loss_ce(ret, gt.long())
-        pred = ret.argmax(-1)
+    def get_loss_acc(self, pred, gt, smoothing=True):
+        # import pdb; pdb.set_trace()
+        gt = gt.contiguous().view(-1).long()
+
+        if smoothing:
+            eps = 0.2
+            n_class = pred.size(1)
+
+            one_hot = torch.zeros_like(pred).scatter(1, gt.view(-1, 1), 1)
+            one_hot = one_hot * (1 - eps) + (1 - one_hot) * eps / (n_class - 1)
+            log_prb = F.log_softmax(pred, dim=1)
+
+            loss = -(one_hot * log_prb).sum(dim=1).mean()
+        else:
+            loss = self.loss_ce(pred, gt.long())
+
+        pred = pred.argmax(-1)
         acc = (pred == gt).sum() / float(gt.size(0))
+
         return loss, acc * 100
+
 
     def load_model_from_ckpt(self, bert_ckpt_path):
         ckpt = torch.load(bert_ckpt_path)

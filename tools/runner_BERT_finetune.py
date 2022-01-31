@@ -117,6 +117,8 @@ def run_net(args, config, train_writer=None, val_writer=None):
 
             if npoints == 1024:
                 point_all = 1200
+            elif npoints == 2048:
+                point_all = 2400
             elif npoints == 4096:
                 point_all = 4800
             elif npoints == 8192:
@@ -135,7 +137,8 @@ def run_net(args, config, train_writer=None, val_writer=None):
 
             ret = base_model(points)
 
-            loss, acc = base_model.module.get_loss_acc(ret, label)
+            # loss, acc = base_model.module.get_loss_acc(ret, label)
+            loss, acc = base_model.module.get_loss_acc(ret, label, smoothing=args.label_smoothing)
 
             _loss = loss
 
@@ -266,6 +269,8 @@ def validate_vote(base_model, test_dataloader, epoch, val_writer, args, config, 
             label = data[1].cuda()
             if npoints == 1024:
                 point_all = 1200
+            elif npoints == 2048:
+                point_all = 2400
             elif npoints == 4096:
                 point_all = 4800
             elif npoints == 8192:
