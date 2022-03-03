@@ -181,10 +181,10 @@ MIT License
 ## Citation
 If you find our work useful in your research, please consider citing: 
 ```
-@article{yu2021pointbert,
+@inproceedings{yu2021pointbert,
   title={Point-BERT: Pre-Training 3D Point Cloud Transformers with Masked Point Modeling},
   author={Yu, Xumin and Tang, Lulu and Rao, Yongming and Huang, Tiejun and Zhou, Jie and Lu, Jiwen},
-  journal={arXiv preprint},
-  year={2021}
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year={2022}
 }
 ```
