@@ -168,7 +168,23 @@ bash ./scripts/test_BERT.sh <GPU_IDS>\
 ```
 
 #### Part Segmentation
-Code coming soon
+
+To finetune a pre-trained Point-BERT model on ShapeNetPart
+```
+cd segmentation
+python train_partseg.py \
+    --model PointTransformer \
+    --gpu <GPU_IDS> \
+    --pretrain_weight <path> \
+    --log_dir <name> 
+```
+To evaluate a model on ShapeNetPart, simply run:
+```
+python test_partseg.py \
+    --gpu <GPU_IDS> \
+    --log_dir <name> 
+```
+
 
 ### Visualization
 Masked point clouds reconstruction using our Point-BERT model trained on ShapeNet
