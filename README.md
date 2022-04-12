@@ -37,8 +37,8 @@ Point-BERT is a new paradigm for learning Transformers to generalize the concept
 ### Requirements
 
 - PyTorch >= 1.7.0
-- python >= 3.7
-- CUDA >= 9.0
+- python == 3.7
+- CUDA >= 10.2
 - GCC >= 4.9 
 - torchvision
 - timm
