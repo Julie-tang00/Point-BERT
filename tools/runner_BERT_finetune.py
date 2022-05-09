@@ -380,7 +380,7 @@ def test(base_model, test_dataloader, args, config, logger = None):
         print_log(f"[TEST_VOTE]", logger = logger)
         acc = 0.
         for time in range(1, 10):
-            this_acc = test_vote(base_model, test_dataloader, 1, None, args, config, logger=logger, times=time)
+            this_acc = test_vote(base_model, test_dataloader, 1, None, args, config, logger=logger, times=10)
             if acc < this_acc:
                 acc = this_acc
 
