@@ -175,9 +175,9 @@ at::Tensor ApproxMatchForward(
   const auto n = xyz1.size(1);
   const auto m = xyz2.size(1);
 
-  CHECK_EQ(xyz2.size(0), b);
-  CHECK_EQ(xyz1.size(2), 3);
-  CHECK_EQ(xyz2.size(2), 3);
+  TORCH_CHECK_EQ(xyz2.size(0), b);
+  TORCH_CHECK_EQ(xyz1.size(2), 3);
+  TORCH_CHECK_EQ(xyz2.size(2), 3);
   CHECK_INPUT(xyz1);
   CHECK_INPUT(xyz2);
 
@@ -262,9 +262,9 @@ at::Tensor MatchCostForward(
   const auto n = xyz1.size(1);
   const auto m = xyz2.size(1);
 
-  CHECK_EQ(xyz2.size(0), b);
-  CHECK_EQ(xyz1.size(2), 3);
-  CHECK_EQ(xyz2.size(2), 3);
+  TORCH_CHECK_EQ(xyz2.size(0), b);
+  TORCH_CHECK_EQ(xyz1.size(2), 3);
+  TORCH_CHECK_EQ(xyz2.size(2), 3);
   CHECK_INPUT(xyz1);
   CHECK_INPUT(xyz2);
 
@@ -379,9 +379,9 @@ std::vector<at::Tensor> MatchCostBackward(
   const auto n = xyz1.size(1);
   const auto m = xyz2.size(1);
 
-  CHECK_EQ(xyz2.size(0), b);
-  CHECK_EQ(xyz1.size(2), 3);
-  CHECK_EQ(xyz2.size(2), 3);
+  TORCH_CHECK_EQ(xyz2.size(0), b);
+  TORCH_CHECK_EQ(xyz1.size(2), 3);
+  TORCH_CHECK_EQ(xyz2.size(2), 3);
   CHECK_INPUT(xyz1);
   CHECK_INPUT(xyz2);
 
