@@ -144,6 +144,7 @@ data/ModelNetFewshot/5way_10shot
 data/ModelNetFewshot/5way_20shot
 data/ModelNetFewshot/10way_10shot
 data/ModelNetFewshot/10way_20shot
+data/SemanticKitti/SemanticKitti/*
 data/shapenetcore_partanno_segmentation_benchmark_v0_normal
 experiments
 vis/
