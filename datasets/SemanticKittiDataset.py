@@ -6,9 +6,9 @@ import os
 import torch
 import numpy as np
 import torch.utils.data as data
-from .io import IO
-from .build import DATASETS
-from utils.logger import *
+#from .io import IO
+#from .build import DATASETS
+#from utils.logger import *
 from pathlib import Path
 
 
@@ -289,7 +289,7 @@ class SemLaserScan(LaserScan):
         self.proj_inst_color[mask] = self.inst_color_lut[self.inst_label[self.proj_idx[mask]]]
 
 
-@DATASETS.register_module()
+#@DATASETS.register_module()
 class SemanticKitti(data.Dataset):
     def __init__(self, config):
         self.data_root = config.DATA_PATH
@@ -321,30 +321,55 @@ class SemanticKitti(data.Dataset):
 
         self.file_list = []
         for scene in scenes:
-            self.file_list += list(Path.glob(Path(self.data_root,'SemanticKitti','dataset','sequences',scene),'*.bin'))
+            match_path = os.path.join(self.data_root,'SemanticKitti','dataset','sequences',scene)
+            self.file_list += list(
+                Path.glob(Path(match_path), os.path.join('*','*.bin'))
+            )
 
         # for each velodyne point cloud frame, we check if there is a label
-        for i,point_file in enumerate(self.file_list):
+        for i, point_file in enumerate(self.file_list):
             # XXXXXX from XXXXXX.bin
-            frame_number = os.path.basename(point_file)[-4]
-            # removing 'velodyne/XXXXXX.bin' from the filename
-            label_assumed_path = os.path.join(point_file[:-11-8-2],'labels',frame_number,'.label')
-            if os.path.exists(label_assumed_path):
+            frame_number = point_file.stem
+            #frame_number = os.path.basename(point_file)[-4]
+            # grabbing label path
+            label_assumed_path = point_file.parent.parent.joinpath(Path('labels',frame_number+'.label'))
+            #label_assumed_path = point_file.joinpath(Path('..','labels',str(frame_number),'.label'))
+            if label_assumed_path.exists():
                 # add the label as a tuple
-                self.file_list[i] = (point_file,label_assumed_path)
+                self.file_list[i] = (point_file, label_assumed_path)
             else:
                 # set the label to None
-                self.file_list[i] = (point_file,None)
-
+                self.file_list[i] = (point_file, None)
 
     def __getitem__(self, idx):
         point_cloud_file, label_file = self.file_list[idx]
-        point_cloud = np.fromfile(point_cloud_file,'<f4').reshape((-1,4))
+        point_cloud = np.fromfile(point_cloud_file, dtype=np.float32).reshape((-1, 4))
         labels = None
         if label_file is not None:
-            labels = np.fromfile(label_file,'<f4').reshape((-1,1))
-        point_cloud = torch.from_numpy(point_cloud).float()
+            # lower 16 bits give the semantic label
+            # higher 16 bits gives the instance label
+            labels = np.fromfile(label_file, dtype=np.uint32).reshape(-1) & 0xFFFF
+            print(np.unique(labels))
+            # we have 16 bits of unsigned information, we can represent this in int32
+            labels = labels.astype(np.int32)
+        point_cloud = torch.from_numpy(point_cloud)
+        if labels is not None:
+            labels = torch.from_numpy(labels)
         return point_cloud, labels
 
     def __len__(self):
         return len(self.file_list)
+
+class testConfig():
+    def __init__(self):
+        self.DATA_PATH = './../data/SemanticKitti/'
+        self.N_POINTS= 1000
+        self.subset='val'
+        self.EXPERIMENTAL= True
+
+
+test = SemanticKitti(testConfig())
+print(len(test))
+cloud,label = test[0]
+print(cloud.shape)
+print(label.shape)
