@@ -348,8 +348,8 @@ class SemanticKitti(data.Dataset):
         if label_file is not None:
             # lower 16 bits give the semantic label
             # higher 16 bits gives the instance label
-            labels = np.fromfile(label_file, dtype=np.uint32).reshape(-1) & 0xFFFF
-            print(np.unique(labels))
+            labels = np.fromfile(label_file, dtype=np.uint32).reshape((-1))
+            labels = labels & 0xFFFF
             # we have 16 bits of unsigned information, we can represent this in int32
             labels = labels.astype(np.int32)
         point_cloud = torch.from_numpy(point_cloud)
@@ -369,7 +369,15 @@ class testConfig():
 
 
 test = SemanticKitti(testConfig())
-print(len(test))
 cloud,label = test[0]
 print(cloud.shape)
 print(label.shape)
+
+label_set = set()
+for _,label in test:
+    uniques = np.unique(label.numpy())
+    uniques = set(uniques.tolist())
+    label_set.update(uniques)
+
+print(label_set)
+print(len(label_set))
