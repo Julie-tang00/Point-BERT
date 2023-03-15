@@ -48,7 +48,10 @@ class SemanticKitti(data.Dataset):
         self.npoints = npoints
         self.split = split.strip().lower()
         self.experimental = experimental
+        # maps raw labels to sequential labels for learning
         self.learning_map = load_kitti_label_map('learning_map')
+        # maps the sequential learning labels back to categorical label indices
+        self.inv_map = load_kitti_label_map('learning_map_inv')
 
         # specific scenes are used for train,val, and test respectively
         # we do not have access to test labels, but we need to output test results and submit to competition site
@@ -132,6 +135,7 @@ cloud, label = test[2]
 print(cloud.shape)
 print(label.shape)
 print(np.unique(label))
+print(len(test.inv_map))
 
 # WE HAVE 28 UNIQUE LABELS!
 # WE NEED TO USE A MAPPING FROM SEMANTICKITTI-API in order to map raw labels to learning labels
