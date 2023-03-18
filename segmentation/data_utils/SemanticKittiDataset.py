@@ -52,6 +52,8 @@ class SemanticKitti(data.Dataset):
         self.learning_map = load_kitti_label_map('learning_map')
         # maps the sequential learning labels back to categorical label indices
         self.inv_map = load_kitti_label_map('learning_map_inv')
+        # maps the actual categorical label indices to names
+        self.name_map = load_kitti_label_map('labels')
 
         # specific scenes are used for train,val, and test respectively
         # we do not have access to test labels, but we need to output test results and submit to competition site
