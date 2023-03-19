@@ -2,5 +2,6 @@
 
 nvidia-smi
 cd /filer/tmp1/NET_ID_HERE/CS-525-Project
+source activate python37
 conda activate pointbert_env
 python semantic_segmentation.py
