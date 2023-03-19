@@ -9,7 +9,7 @@ import models.PointTransformer as PointTransformer
 from timm.scheduler import CosineLRScheduler
 import os
 import numpy as np
-import segmentation.provider as provider
+import provider
 from sklearn.metrics import jaccard_score
 
 
