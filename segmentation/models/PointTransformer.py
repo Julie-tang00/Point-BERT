@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from timm.models.layers import DropPath, trunc_normal_
-from utils import get_missing_parameters_message, get_unexpected_parameters_message
+from segmentation.models.utils import get_missing_parameters_message, get_unexpected_parameters_message
 
 from pointnet2_ops import pointnet2_utils
 from knn_cuda import KNN
@@ -169,7 +169,7 @@ class TransformerEncoder(nn.Module):
         return feature_list
 
 
-from models.pointnet2_utils import PointNetFeaturePropagation
+from segmentation.models.pointnet2_utils import PointNetFeaturePropagation
 class DGCNN_Propagation(nn.Module):
     def __init__(self, k = 16):
         super().__init__()
