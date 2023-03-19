@@ -44,7 +44,7 @@ class SemanticKitti(data.Dataset):
     # experimental is a flag that is set to use different splits
     # i.e we want to test on a portion of the training set instead of the official splits
     def __init__(self, npoints=2048, split='train', experimental=True):
-        self.data_root = os.path.join('.', '..', '..', 'data', 'SemanticKitti')
+        self.data_root = os.path.join(ROOT_DIR, 'data', 'SemanticKitti')
         self.npoints = npoints
         self.split = split.strip().lower()
         self.experimental = experimental
