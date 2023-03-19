@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import torch.utils.data as data
 from tqdm import tqdm
 from constants import ROOT_DIR
-import models.PointTransformer as PointTransformer
+from .models.PointTransformer import get_model,get_loss
 from timm.scheduler import CosineLRScheduler
 import os
 import numpy as np
@@ -69,8 +69,8 @@ def train():
         encoder_dims= 256,
     )
 
-    model = PointTransformer.get_model(model_config).cuda()
-    loss_comp = PointTransformer.get_loss().cuda()
+    model = get_model(model_config).cuda()
+    loss_comp = get_loss().cuda()
     model.apply(inplace_relu)
 
 
