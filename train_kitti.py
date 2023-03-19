@@ -1,11 +1,11 @@
 # train file for semantic kitti semantic segmentation task
-from data_utils.SemanticKittiDataset import SemanticKitti
+from segmentation.data_utils.SemanticKittiDataset import SemanticKitti
 import torch
 import torch.nn.functional as F
 import torch.utils.data as data
 from tqdm import tqdm
 from constants import ROOT_DIR
-import models.PointTransformer as PointTransformer
+import segmentation.models.PointTransformer as PointTransformer
 from timm.scheduler import CosineLRScheduler
 import os
 import numpy as np
