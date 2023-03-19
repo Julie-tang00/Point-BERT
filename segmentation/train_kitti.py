@@ -1,15 +1,15 @@
 # train file for semantic kitti semantic segmentation task
-from data_utils.SemanticKittiDataset import SemanticKitti
+from segmentation.data_utils.SemanticKittiDataset import SemanticKitti
 import torch
 import torch.nn.functional as F
 import torch.utils.data as data
 from tqdm import tqdm
 from Constants.constants import ROOT_DIR
-from .models.PointTransformer import get_model,get_loss
+from segmentation.models.PointTransformer import get_model,get_loss
 from timm.scheduler import CosineLRScheduler
 import os
 import numpy as np
-import provider
+import segmentation.provider as provider
 from sklearn.metrics import jaccard_score
 
 
