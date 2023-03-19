@@ -4,7 +4,7 @@ import torch
 import torch.nn.functional as F
 import torch.utils.data as data
 from tqdm import tqdm
-from constants import ROOT_DIR
+from Constants.constants import ROOT_DIR
 from .models.PointTransformer import get_model,get_loss
 from timm.scheduler import CosineLRScheduler
 import os
