@@ -1,5 +1,5 @@
 # train file for semantic kitti semantic segmentation task
-from segmentation.data_utils.SemanticKittiDataset import SemanticKitti
+from data_utils.SemanticKittiDataset import SemanticKitti
 import torch
 import torch.nn.functional as F
 import torch.utils.data as data
