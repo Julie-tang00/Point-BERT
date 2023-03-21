@@ -154,7 +154,9 @@ def train():
                 print('label shape: ' + str(label.shape))
                 #seg_pred = seg_pred.contiguous().view(-1, num_classes)
                 #print('reshaped seg pred shape: ' + str(seg_pred.shape))
-                pred_choice = seg_pred.data.max(1)[1]
+                #pred_choice = seg_pred.data.max(1)[1]
+                # converting probabilities to predictions
+                pred_choice = torch.argmax(seg_pred,dim=-1)
                 print('pred_choice shape: ' + str(pred_choice.shape))
 
 
