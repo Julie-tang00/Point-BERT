@@ -366,7 +366,7 @@ class get_model(nn.Module):
         #print('cls_label_shape: ' + str(cls_label.shape))
         #cls_label_one_hot = cls_label.view(B, 19, 1).repeat(1, 1, N)
         # cls label is already given as one-hot no need to make it one-hot
-        cls_label_one_hot = cls_label
+        cls_label_one_hot = cls_label.transpose(-1,-2).contiguous
         center_level_0 = pts.transpose(-1, -2).contiguous()
         print(center_level_0.shape)
         print(cls_label_one_hot.shape)
