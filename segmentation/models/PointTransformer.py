@@ -291,7 +291,7 @@ class get_model(nn.Module):
 
         self.propagation_2 = PointNetFeaturePropagation(in_channel= self.trans_dim + 3, mlp = [self.trans_dim * 4, self.trans_dim])
         self.propagation_1= PointNetFeaturePropagation(in_channel= self.trans_dim + 3, mlp = [self.trans_dim * 4, self.trans_dim])
-        self.propagation_0 = PointNetFeaturePropagation(in_channel= self.trans_dim + 3 + 16, mlp = [self.trans_dim * 4, self.trans_dim])
+        self.propagation_0 = PointNetFeaturePropagation(in_channel= self.trans_dim + 3 + 19, mlp = [self.trans_dim * 4, self.trans_dim])
         self.dgcnn_pro_1 = DGCNN_Propagation(k = 4)
         self.dgcnn_pro_2 = DGCNN_Propagation(k = 4)
 
