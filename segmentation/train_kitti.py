@@ -133,6 +133,7 @@ def train():
                 points[:, :, 0:3] = provider.shift_point_cloud(points[:, :, 0:3])
                 points = torch.Tensor(points)
                 points, label = points.float().cuda(), label.long().cuda()
+                print(points.shape)
 
                 # filtering out 0 class (outlier class not used for training or evaluation)
                 # so, we just filter out the points and label for which the label is 0
@@ -140,6 +141,7 @@ def train():
                 points = points[remove_zero_mask]
                 label = label[remove_zero_mask]
 
+                print(points.shape)
                 points = points.transpose(2, 1)
                 seg_pred, _ = model(points, F.one_hot(label, num_classes))
                 seg_pred = seg_pred.contiguous().view(-1, num_classes)
