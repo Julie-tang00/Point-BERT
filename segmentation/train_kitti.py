@@ -133,10 +133,11 @@ def train():
                 points[:, :, 0:3] = provider.shift_point_cloud(points[:, :, 0:3])
                 points = torch.Tensor(points)
                 points, label = points.float().cuda(), label.long().cuda()
-                print(points.shape)
 
                 # filtering out 0 class (outlier class not used for training or evaluation)
                 # so, we just filter out the points and label for which the label is 0
+                # WE ARE FILTERING IN THE DATASET ITSELF SO I COMMENTED THIS OUT
+                '''
                 remove_zero_mask = ~torch.eq(label, 0)
                 print(remove_zero_mask.shape)
                 label = label[remove_zero_mask]
@@ -144,8 +145,8 @@ def train():
                 remove_zero_mask = remove_zero_mask.unsqueeze(2).repeat(1, 1, 3)
                 print(remove_zero_mask.shape)
                 points = points[remove_zero_mask]
+                '''
 
-                print(points.shape)
                 points = points.transpose(2, 1)
                 seg_pred, _ = model(points, F.one_hot(label, num_classes))
                 seg_pred = seg_pred.contiguous().view(-1, num_classes)
@@ -178,9 +179,12 @@ def train():
 
                     # filtering out 0 class (outlier class not used for training or evaluation)
                     # so, we just filter out the points and label for which the label is 0
+                    # WE ARE FILTERING IN THE DATASET ITSELF SO I COMMENTED THIS OUT
+                    '''
                     remove_zero_mask = ~torch.eq(label, 0)
                     points = points[remove_zero_mask]
                     label = label[remove_zero_mask]
+                    '''
 
                     points = points.transpose(2, 1)
                     one_hot_label = F.one_hot(label,num_classes)

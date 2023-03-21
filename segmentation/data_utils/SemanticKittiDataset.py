@@ -112,10 +112,20 @@ class SemanticKitti(data.Dataset):
             labels = np.vectorize(self.learning_map.get)(labels)
         # for the point cloud, we are only interested in xyz for this task -> no remission
         point_cloud = point_cloud[:,:3]
+        #print('orig_cloud shape: ' + str(point_cloud.shape))
+        #print('orig_label shape: ' + str(labels.shape))
+        # removing labels and points which correspond to 0 category (outlier) as it is not used for train or eval
+        filter_map = ~(labels==0)
+        #print('filter_shape: ' + str(filter_map.shape))
+        #labels = labels[filter_map]
+        point_cloud = point_cloud[filter_map]
+        #print('filtered_labels_shape: ' + str(labels.shape))
+        #print('filtered_cloud_shape: ' + str(point_cloud.shape))
         # normalizing the point cloud
         point_cloud = torch.from_numpy(point_cloud)
         if labels is not None:
             labels = torch.from_numpy(labels)
+
         # sampling from the point cloud if npoints is not None
         if self.npoints is not None:
             # we sample from the point cloud, and if for some reason we sample less than npoints, we resample with replacement
@@ -132,14 +142,12 @@ class SemanticKitti(data.Dataset):
         return len(self.file_list)
 
 
-'''
 test = SemanticKitti()
 cloud, label = test[2]
 print(cloud.shape)
 print(label.shape)
 print(np.unique(label))
 print(len(test.inv_map))
-'''
 
 # WE HAVE 28 UNIQUE LABELS!
 # WE NEED TO USE A MAPPING FROM SEMANTICKITTI-API in order to map raw labels to learning labels
