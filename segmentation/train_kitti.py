@@ -137,7 +137,7 @@ def train():
 
                 # filtering out 0 class (outlier class not used for training or evaluation)
                 # so, we just filter out the points and label for which the label is 0
-                remove_zero_mask = ~torch.eq(label, 0)
+                remove_zero_mask = ~torch.eq(label, torch.zeros(label.shape))
                 points = points[remove_zero_mask]
                 label = label[remove_zero_mask]
 
