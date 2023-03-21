@@ -138,6 +138,8 @@ def train():
                 # filtering out 0 class (outlier class not used for training or evaluation)
                 # so, we just filter out the points and label for which the label is 0
                 remove_zero_mask = ~torch.eq(label, torch.zeros(label.shape).cuda())
+                # shape is of (batch,npoints) so we unsqueeze to (batch,npoints,1) and then replicate along last axis
+                remove_zero_mask = remove_zero_mask.unsqueeze(2).repeat(1,1,3)
                 print(remove_zero_mask.shape)
                 points = points[remove_zero_mask]
                 label = label[remove_zero_mask]
