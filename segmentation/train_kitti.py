@@ -152,7 +152,9 @@ def train():
                 seg_pred, _ = model(points, F.one_hot(label, num_classes))
                 print('predictions shape: ' + str(seg_pred.shape))
                 seg_pred = seg_pred.contiguous().view(-1, num_classes)
+                print('reshaped seg pred shape: ' + str(seg_pred.shape))
                 pred_choice = seg_pred.data.max(1)[1]
+                print('pred_choice shape: ' + str(pred_choice.shape))
 
 
                 #correct = pred_choice.eq(target.data).cpu().sum()
