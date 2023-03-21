@@ -132,12 +132,14 @@ class SemanticKitti(data.Dataset):
         return len(self.file_list)
 
 
+'''
 test = SemanticKitti()
 cloud, label = test[2]
 print(cloud.shape)
 print(label.shape)
 print(np.unique(label))
 print(len(test.inv_map))
+'''
 
 # WE HAVE 28 UNIQUE LABELS!
 # WE NEED TO USE A MAPPING FROM SEMANTICKITTI-API in order to map raw labels to learning labels
