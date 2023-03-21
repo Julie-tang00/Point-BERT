@@ -10,7 +10,6 @@ from timm.scheduler import CosineLRScheduler
 import os
 import numpy as np
 import segmentation.provider as provider
-from sklearn.metrics import jaccard_score
 
 
 def bn_momentum_adjust(m, momentum):
@@ -43,6 +42,10 @@ def inplace_relu(m):
         m.inplace=True
 
 def train():
+    # place to checkpoint the model
+    checkpoints_dir = os.path.join(ROOT_DIR,'segmentation','saved_weights')
+
+
     # obtaining torch datasets needed for training and setting training parameters
     npoints=2048
     train = SemanticKitti(npoints=npoints)
@@ -122,24 +125,31 @@ def train():
             classifier = classifier.train()
 
             '''learning one epoch'''
-            for i, (points, label, target) in tqdm(enumerate(train_loader), total=len(train_loader), smoothing=0.9):
+            for i, (points, label) in tqdm(enumerate(train_loader), total=len(train_loader), smoothing=0.9):
                 optimizer.zero_grad()
 
                 points = points.data.numpy()
                 points[:, :, 0:3] = provider.random_scale_point_cloud(points[:, :, 0:3])
                 points[:, :, 0:3] = provider.shift_point_cloud(points[:, :, 0:3])
                 points = torch.Tensor(points)
-                points, label, target = points.float().cuda(), label.long().cuda(), target.long().cuda()
+                points, label = points.float().cuda(), label.long().cuda()
+
+                # filtering out 0 class (outlier class not used for training or evaluation)
+                # so, we just filter out the points and label for which the label is 0
+                remove_zero_mask = ~torch.eq(label, 0)
+                points = points[remove_zero_mask]
+                label = label[remove_zero_mask]
+
                 points = points.transpose(2, 1)
                 seg_pred, _ = classifier(points, F.one_hot(label, num_classes))
                 seg_pred = seg_pred.contiguous().view(-1, num_classes)
-                target = target.view(-1, 1)[:, 0]
                 pred_choice = seg_pred.data.max(1)[1]
 
+
                 #correct = pred_choice.eq(target.data).cpu().sum()
-                correct = pred_choice.eq(target.data).sum().cpu().sum()
+                correct = pred_choice.eq(label).type(torch.int32).sum().cpu()
                 mean_correct.append(correct.item() / (batch_size * npoints))
-                loss = loss_comp(seg_pred, target, None)
+                loss = loss_comp(seg_pred, label, None)
                 loss.backward()
                 optimizer.step()
             train_instance_acc = np.mean(mean_correct)
@@ -152,37 +162,42 @@ def train():
                 true_positive = torch.zeros(num_classes)
                 false_positive = torch.zeros(num_classes)
                 false_negative = torch.zeros(num_classes)
-                total_class_correct = torch.zeros(num_classes)
                 total_class_seen = torch.zeros(num_classes)
 
                 classifier = classifier.eval()
 
-                for batch_id, (points, label, target) in tqdm(enumerate(val_loader), total=len(val_loader), smoothing=0.9):
+                for batch_id, (points, label) in tqdm(enumerate(val_loader), total=len(val_loader), smoothing=0.9):
                     cur_batch_size, NUM_POINT, _ = points.size()
-                    points, label, target = points.float().cuda(), label.long().cuda(), target.long().cuda()
+                    points, label = points.float().cuda(), label.long().cuda()
+
+                    # filtering out 0 class (outlier class not used for training or evaluation)
+                    # so, we just filter out the points and label for which the label is 0
+                    remove_zero_mask = ~torch.eq(label, 0)
+                    points = points[remove_zero_mask]
+                    label = label[remove_zero_mask]
+
                     points = points.transpose(2, 1)
                     one_hot_label = F.one_hot(label,num_classes)
                     seg_pred, _ = classifier(points, one_hot_label)
                     cur_pred_val = seg_pred.cpu().data.numpy()
-                    cur_pred_val_logits = cur_pred_val
-                    cur_pred_val = np.zeros((cur_batch_size, NUM_POINT)).astype(np.int32)
-                    target = target.cpu().data.numpy()
+                    #cur_pred_val_logits = cur_pred_val
+                    #cur_pred_val = np.zeros((cur_batch_size, NUM_POINT)).astype(np.int32)
 
                     #miou needs true positives, false positives, and false negatives for each class
                     one_hot_pred = F.one_hot(cur_pred_val,num_classes)
-                    true_positive = torch.sum(one_hot_pred == one_hot_label).cpu()
-                    false_negative += torch.sum(one_hot_label[one_hot_pred!=one_hot_label]).cpu()
-                    false_positive += torch.sum(one_hot_pred[one_hot_pred!=one_hot_label]).cpu()
+                    correct_vals = torch.eq(one_hot_pred,one_hot_label)
+                    true_positive = torch.sum(correct_vals.type(torch.int32)).cpu()
+                    false_negative += torch.sum(one_hot_label[~correct_vals]).cpu()
+                    false_positive += torch.sum(one_hot_pred[~correct_vals]).cpu()
 
                     # we need to filter out 0 labels values (they are not used for training or testing)
 
                     # getting total number correct by class (we will make use of one hot encodings here)
-                    total_class_correct += torch.sum(one_hot_pred==one_hot_label).cpu()
                     total_class_seen += torch.sum(one_hot_label).cpu()
 
                 # computing total accuracy, class-wise accuracy, class-wise IoU, and total mIoU
-                total_accuracy = torch.sum(total_class_correct)/torch.sum(total_class_seen)
-                class_accuracy = total_class_correct/total_class_seen
+                total_accuracy = torch.sum(true_positive)/torch.sum(total_class_seen)
+                class_accuracy = true_positive/total_class_seen
 
                 class_iou = true_positive/ (true_positive + false_negative + false_positive)
                 total_miou = torch.sum(class_iou)/num_classes
