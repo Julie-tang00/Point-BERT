@@ -51,7 +51,8 @@ def train():
     train = SemanticKitti(npoints=npoints)
     val = SemanticKitti(split='val',npoints=npoints)
 
-    num_classes = len(train.inv_map)
+    # we have 19 usable classes (class 0 is omitted for training and eval)
+    num_classes = len(train.inv_map) - 1
     batch_size = 8
 
     train_loader = data.DataLoader(train,batch_size=batch_size,shuffle=True,num_workers=4)

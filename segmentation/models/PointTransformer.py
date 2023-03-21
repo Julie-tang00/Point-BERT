@@ -339,9 +339,9 @@ class get_model(nn.Module):
 
     def forward(self, pts, cls_label):
         B,C,N = pts.shape
-        print('forward batch: ' + str(B))
-        print('forward dimensions: ' + str(C))
-        print('forward num_points: ' + str(N))
+        #print('forward batch: ' + str(B))
+        #print('forward dimensions: ' + str(C))
+        #print('forward num_points: ' + str(N))
         pts = pts.transpose(-1, -2) # B N 3
         # divide the point clo  ud in the same form. This is important
         neighborhood, center = self.group_divider(pts)
@@ -362,7 +362,8 @@ class get_model(nn.Module):
         feature_list = self.blocks(x, pos)
         feature_list = [self.norm(x)[:,1:].transpose(-1, -2).contiguous() for x in feature_list]
 
-        cls_label_one_hot = cls_label.view(B, 16, 1).repeat(1, 1, N)
+        # 19 classes in semantic kitti
+        cls_label_one_hot = cls_label.view(B, 19, 1).repeat(1, 1, N)
         center_level_0 = pts.transpose(-1, -2).contiguous()                     
         f_level_0 = torch.cat([cls_label_one_hot, center_level_0], 1)
 

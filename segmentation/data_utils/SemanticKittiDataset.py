@@ -116,6 +116,10 @@ class SemanticKitti(data.Dataset):
             filter_map = ~(labels == 0)
             labels = labels[filter_map]
             point_cloud = point_cloud[filter_map]
+            #IMPORTANT!!!!
+            # decrement labels by 1 so labels 1-19 are related to cls-one-hot from 0-18
+            labels -= 1
+            # then we can just increment predictions by 1 and reverse map them
 
         point_cloud = torch.from_numpy(point_cloud)
         if labels is not None:
