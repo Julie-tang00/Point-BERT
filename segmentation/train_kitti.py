@@ -108,6 +108,7 @@ def train():
     best_acc = 0
     global_epoch = 0
     best_class_avg_iou = 0
+    best_total_miou = 0
 
     start_epoch=0
     # training loop with mIoU (jaccard index) computation
