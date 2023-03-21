@@ -150,14 +150,14 @@ def train():
 
                 points = points.transpose(2, 1)
                 seg_pred, _ = model(points, F.one_hot(label, num_classes))
-                print('predictions shape: ' + str(seg_pred.shape))
-                print('label shape: ' + str(label.shape))
+                #print('predictions shape: ' + str(seg_pred.shape))
+                #print('label shape: ' + str(label.shape))
                 #seg_pred = seg_pred.contiguous().view(-1, num_classes)
                 #print('reshaped seg pred shape: ' + str(seg_pred.shape))
                 #pred_choice = seg_pred.data.max(1)[1]
                 # converting probabilities to predictions
                 pred_choice = torch.argmax(seg_pred,dim=-1)
-                print('pred_choice shape: ' + str(pred_choice.shape))
+                #print('pred_choice shape: ' + str(pred_choice.shape))
 
 
                 #correct = pred_choice.eq(target.data).cpu().sum()
@@ -166,8 +166,8 @@ def train():
                 # need to compute the loss using all points in the batch
                 seg_pred = seg_pred.flatten(start_dim=0,end_dim=1)
                 label = label.flatten(start_dim=0,end_dim=1)
-                print('flat seg_pred_shape: ' + str(seg_pred.shape))
-                print('flat label_shape: ' + str(label.shape))
+                #print('flat seg_pred_shape: ' + str(seg_pred.shape))
+                #print('flat label_shape: ' + str(label.shape))
                 loss = loss_comp(seg_pred, label, None)
                 loss.backward()
                 optimizer.step()
@@ -199,23 +199,29 @@ def train():
                     '''
 
                     points = points.transpose(2, 1)
+                    # one hot label has shape (batch,npoints,19)
                     one_hot_label = F.one_hot(label,num_classes)
                     seg_pred, _ = model(points, one_hot_label)
-                    cur_pred_val = seg_pred.cpu().data.numpy()
-                    #cur_pred_val_logits = cur_pred_val
-                    #cur_pred_val = np.zeros((cur_batch_size, NUM_POINT)).astype(np.int32)
+                    #cur_pred_val = seg_pred.cpu().data.numpy()
+                    # converting (Batch,npoints,19) to (batch,npoints,1) with the predicted class
+                    cur_pred_val = torch.argmax(seg_pred,dim=-1)
+                    # flattening predictions to be (total_points,1) i.e points and their predictions
+                    cur_pred_val = torch.flatten(cur_pred_val,start_dim=0,end_dim=1)
+                    # flattening label one_hot to be (total_points,19) i.e one_hot_label for each point
+                    one_hot_label = torch.flatten(one_hot_label,start_dim=0,end_dim=1)
 
                     #miou needs true positives, false positives, and false negatives for each class
+                    # one_hot_pred has shape (total_points,19) at this stage
                     one_hot_pred = F.one_hot(cur_pred_val,num_classes)
-                    correct_vals = torch.eq(one_hot_pred,one_hot_label)
-                    true_positive = torch.sum(correct_vals.type(torch.int32)).cpu()
-                    false_negative += torch.sum(one_hot_label[~correct_vals]).cpu()
-                    false_positive += torch.sum(one_hot_pred[~correct_vals]).cpu()
+                    correct_vals = torch.eq(one_hot_pred,one_hot_label).all(dim=-1)
+                    true_positive += torch.sum(one_hot_label[correct_vals],dim=0).cpu()
+                    false_negative += torch.sum(one_hot_label[~correct_vals],dim=0).cpu()
+                    false_positive += torch.sum(one_hot_pred[~correct_vals],dim=0).cpu()
 
                     # we need to filter out 0 labels values (they are not used for training or testing)
 
                     # getting total number correct by class (we will make use of one hot encodings here)
-                    total_class_seen += torch.sum(one_hot_label).cpu()
+                    total_class_seen += torch.sum(one_hot_label,dim=0).cpu()
 
                 # computing total accuracy, class-wise accuracy, class-wise IoU, and total mIoU
                 total_accuracy = torch.sum(true_positive)/torch.sum(total_class_seen)
