@@ -163,6 +163,11 @@ def train():
                 #correct = pred_choice.eq(target.data).cpu().sum()
                 correct = pred_choice.eq(label).type(torch.int32).sum().cpu()
                 mean_correct.append(correct.item() / (batch_size * npoints))
+                # need to compute the loss using all points in the batch
+                seg_pred = seg_pred.flatten(start_dim=0,end_dim=1)
+                label = label.flatten(start_dim=0,end_dim=1)
+                print('flat seg_pred_shape: ' + str(seg_pred.shape))
+                print('flat label_shape: ' + str(label.shape))
                 loss = loss_comp(seg_pred, label, None)
                 loss.backward()
                 optimizer.step()
