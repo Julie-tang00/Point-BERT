@@ -121,8 +121,8 @@ def train():
             if momentum < 0.01:
                 momentum = 0.01
             print('BN momentum updated to: %f' % momentum)
-            classifier = classifier.apply(lambda x: bn_momentum_adjust(x, momentum))
-            classifier = classifier.train()
+            model = model.apply(lambda x: bn_momentum_adjust(x, momentum))
+            model = model.train()
 
             '''learning one epoch'''
             for i, (points, label) in tqdm(enumerate(train_loader), total=len(train_loader), smoothing=0.9):
@@ -141,7 +141,7 @@ def train():
                 label = label[remove_zero_mask]
 
                 points = points.transpose(2, 1)
-                seg_pred, _ = classifier(points, F.one_hot(label, num_classes))
+                seg_pred, _ = model(points, F.one_hot(label, num_classes))
                 seg_pred = seg_pred.contiguous().view(-1, num_classes)
                 pred_choice = seg_pred.data.max(1)[1]
 
@@ -164,7 +164,7 @@ def train():
                 false_negative = torch.zeros(num_classes)
                 total_class_seen = torch.zeros(num_classes)
 
-                classifier = classifier.eval()
+                model = model.eval()
 
                 for batch_id, (points, label) in tqdm(enumerate(val_loader), total=len(val_loader), smoothing=0.9):
                     cur_batch_size, NUM_POINT, _ = points.size()
@@ -178,7 +178,7 @@ def train():
 
                     points = points.transpose(2, 1)
                     one_hot_label = F.one_hot(label,num_classes)
-                    seg_pred, _ = classifier(points, one_hot_label)
+                    seg_pred, _ = model(points, one_hot_label)
                     cur_pred_val = seg_pred.cpu().data.numpy()
                     #cur_pred_val_logits = cur_pred_val
                     #cur_pred_val = np.zeros((cur_batch_size, NUM_POINT)).astype(np.int32)
@@ -223,7 +223,7 @@ def train():
                     'class_acc': test_metrics['class_accuracy'],
                     'class_iou': test_metrics['class_iou'],
                     'total_miou': test_metrics['total_miou'],
-                    'model_state_dict': classifier.state_dict(),
+                    'model_state_dict': model.state_dict(),
                     'optimizer_state_dict': optimizer.state_dict(),
                 }
                 torch.save(state, savepath)
