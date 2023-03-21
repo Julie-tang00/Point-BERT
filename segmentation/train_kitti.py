@@ -83,9 +83,9 @@ def train():
     model.load_model_from_ckpt(pretrained_path)
 
     # optimizer settings
-    decay_rate = 0.1
+    decay_rate = 5e-2
     learning_rate = 0.003
-    curr_epoch = 0
+    curr_epoch = 300
     param_groups = add_weight_decay(model, weight_decay=decay_rate)
     optimizer = torch.optim.AdamW(param_groups, lr=learning_rate, weight_decay=decay_rate)
 
