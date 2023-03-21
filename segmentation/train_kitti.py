@@ -150,6 +150,7 @@ def train():
 
                 points = points.transpose(2, 1)
                 seg_pred, _ = model(points, F.one_hot(label, num_classes))
+                print('predictions shape: ' + str(seg_pred.shape))
                 seg_pred = seg_pred.contiguous().view(-1, num_classes)
                 pred_choice = seg_pred.data.max(1)[1]
 

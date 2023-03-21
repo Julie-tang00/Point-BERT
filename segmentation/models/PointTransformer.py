@@ -368,8 +368,8 @@ class get_model(nn.Module):
         # cls label is already given as one-hot no need to make it one-hot
         cls_label_one_hot = cls_label.transpose(-1,-2).contiguous()
         center_level_0 = pts.transpose(-1, -2).contiguous()
-        print(center_level_0.shape)
-        print(cls_label_one_hot.shape)
+        #print(center_level_0.shape)
+        #print(cls_label_one_hot.shape)
         f_level_0 = torch.cat([cls_label_one_hot, center_level_0], 1)
 
         center_level_1 = fps(pts, 512).transpose(-1, -2).contiguous()            
