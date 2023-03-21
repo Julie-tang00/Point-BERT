@@ -363,8 +363,10 @@ class get_model(nn.Module):
         feature_list = [self.norm(x)[:,1:].transpose(-1, -2).contiguous() for x in feature_list]
 
         # 19 classes in semantic kitti
-        print(cls_label.shape)
-        cls_label_one_hot = cls_label.view(B, 19, 1).repeat(1, 1, N)
+        #print('cls_label_shape: ' + str(cls_label.shape))
+        #cls_label_one_hot = cls_label.view(B, 19, 1).repeat(1, 1, N)
+        # cls label is already given as one-hot no need to make it one-hot
+        cls_label_one_hot = cls_label
         center_level_0 = pts.transpose(-1, -2).contiguous()                     
         f_level_0 = torch.cat([cls_label_one_hot, center_level_0], 1)
 
