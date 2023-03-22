@@ -291,7 +291,7 @@ class get_model(nn.Module):
 
         self.propagation_2 = PointNetFeaturePropagation(in_channel= self.trans_dim + 3, mlp = [self.trans_dim * 4, self.trans_dim])
         self.propagation_1= PointNetFeaturePropagation(in_channel= self.trans_dim + 3, mlp = [self.trans_dim * 4, self.trans_dim])
-        self.propagation_0 = PointNetFeaturePropagation(in_channel= self.trans_dim + 3 + 19, mlp = [self.trans_dim * 4, self.trans_dim])
+        self.propagation_0 = PointNetFeaturePropagation(in_channel= self.trans_dim + 3 , mlp = [self.trans_dim * 4, self.trans_dim])
         self.dgcnn_pro_1 = DGCNN_Propagation(k = 4)
         self.dgcnn_pro_2 = DGCNN_Propagation(k = 4)
 
@@ -366,11 +366,13 @@ class get_model(nn.Module):
         #print('cls_label_shape: ' + str(cls_label.shape))
         #cls_label_one_hot = cls_label.view(B, 19, 1).repeat(1, 1, N)
         # cls label is already given as one-hot no need to make it one-hot
-        cls_label_one_hot = cls_label.transpose(-1,-2).contiguous()
+        #cls_label_one_hot = cls_label.transpose(-1,-2).contiguous()
+        # WE DO NOT USE ANY LABEL INPUT FOR FORWARD IN SEMANTIC KITTI
         center_level_0 = pts.transpose(-1, -2).contiguous()
         #print(center_level_0.shape)
         #print(cls_label_one_hot.shape)
-        f_level_0 = torch.cat([cls_label_one_hot, center_level_0], 1)
+        #f_level_0 = torch.cat([cls_label_one_hot, center_level_0], 1)
+        f_level_0 = center_level_0
 
         center_level_1 = fps(pts, 512).transpose(-1, -2).contiguous()            
         f_level_1 = center_level_1
