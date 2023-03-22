@@ -42,6 +42,10 @@ def inplace_relu(m):
         m.inplace=True
 
 def train():
+    # pytorch optimizations
+    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cudnn.allow_tf32 = True
+
     # place to checkpoint the model
     checkpoints_dir = os.path.join(ROOT_DIR,'segmentation','saved_weights')
 
