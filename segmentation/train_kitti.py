@@ -47,7 +47,7 @@ def train():
 
 
     # obtaining torch datasets needed for training and setting training parameters
-    npoints=32768
+    npoints=131072
     train = SemanticKitti(npoints=npoints)
     val = SemanticKitti(split='val',npoints=npoints)
 
