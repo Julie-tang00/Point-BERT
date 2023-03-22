@@ -150,7 +150,7 @@ def train():
                 '''
 
                 points = points.transpose(2, 1)
-                seg_pred, _ = model(points, F.one_hot(label, num_classes))
+                seg_pred, _ = model(points, None)
                 #print('predictions shape: ' + str(seg_pred.shape))
                 #print('label shape: ' + str(label.shape))
                 #seg_pred = seg_pred.contiguous().view(-1, num_classes)
@@ -202,7 +202,7 @@ def train():
                     points = points.transpose(2, 1)
                     # one hot label has shape (batch,npoints,19)
                     one_hot_label = F.one_hot(label,num_classes)
-                    seg_pred, _ = model(points, one_hot_label)
+                    seg_pred, _ = model(points, None)
                     #cur_pred_val = seg_pred.cpu().data.numpy()
                     # converting (Batch,npoints,19) to (batch,npoints,1) with the predicted class
                     cur_pred_val = torch.argmax(seg_pred,dim=-1)
