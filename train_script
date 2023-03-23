@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
 nvidia-smi
-cd /filer/tmp1/NET_ID_HERE/CS-534-Project/Point-BERT-SemanticKitti
+cd /freespace/local/NET_ID_HERE/CS-534-Project/Point-BERT-SemanticKitti
 source activate python37
 conda activate pointbert_env
 python semantic_segmentation.py
