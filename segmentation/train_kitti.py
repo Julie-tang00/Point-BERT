@@ -63,8 +63,12 @@ def train():
     val_loader = data.DataLoader(val,batch_size=batch_size,shuffle=False,num_workers=4)
 
     # obtaining model and playing with group size and number of groups
-    group_size  = 32
-    num_groups = 128
+    '''BELOW ARE THE STANDARD GROUP SIZES'''
+    #group_size  = 32
+    #num_groups = 128
+    '''BELOW ARE MY MODIFICATIONS TO GROUP SIZE AND NUM_GROUPS'''
+    group_size=32
+    num_groups=256
     from easydict import EasyDict
     model_config = EasyDict(
         trans_dim= 384,
