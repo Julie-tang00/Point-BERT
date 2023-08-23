@@ -53,7 +53,7 @@ The overall directory structure should be:
 │  └── test.txt
 ```
 
-**ScanObjectNN Dataset:** Download the offical data from [here](http://103.24.77.34/scanobjectnn) and unzip it into `data/ScanObjectNN`. The directory structure should be:
+**ScanObjectNN Dataset:** Download the offical data from [here](http://103.24.77.34/scanobjectnn) (update: terms of use form required before get the download link, check [here](https://docs.google.com/forms/d/e/1FAIpQLSc6tXkTIBkxIgnjOyK-KKj6s2nLBOzJTQdSdlCDHii0C0bhpw/viewform)) and unzip it into `data/ScanObjectNN`. The directory structure should be:
 ```
 │ScanObjectNN/
 ├──main_split/
