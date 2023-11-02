@@ -6,7 +6,7 @@ from pointnet2_ops import pointnet2_utils
 from .build import MODELS
 from utils import misc
 from extensions.chamfer_dist import ChamferDistanceL1, ChamferDistanceL2
-from extensions.emd import emd
+# from extensions.emd import emd
 from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
 from utils.logger import *
 
@@ -296,7 +296,7 @@ class DiscreteVAE(nn.Module):
     def build_loss_func(self):
         self.loss_func_cdl1 = ChamferDistanceL1().cuda()
         self.loss_func_cdl2 = ChamferDistanceL2().cuda()
-        self.loss_func_emd = emd().cuda()
+        # self.loss_func_emd = emd().cuda()
 
     def recon_loss(self, ret, gt):
         whole_coarse, whole_fine, coarse, fine, group_gt, _ = ret
