@@ -65,7 +65,6 @@ pip install --upgrade https://github.com/unlimblue/KNN_CUDA/releases/download/0.
 ### Dataset
 
 We use **ShapeNet** for the training of dVAE and the pre-training of Point-BERT models. And finetuning the Point-BERT models on **ModelNet**, **ScanObjectNN**, **ShapeNetPart**
-
 The details of used datasets can be found in [DATASET.md](./DATASET.md).
 
 
