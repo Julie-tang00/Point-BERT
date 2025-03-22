@@ -96,7 +96,7 @@ bash ./scripts/dist_train_BERT.sh <NUM_GPU> <port>\
 *val_freq* controls the frequence to evaluate the Transformer on ModelNet40 with LinearSVM.
 
 ### Fine-tuning on downstream tasks
-We finetune our Point-BERT on 4 downstream tasks: Classfication on ModelNet40, Few-shot learning on ModelNet40, Transfer learning on ScanObjectNN and Part segmentation on ShapeNetPart.
+We finetune our Point-BERT on 4 downstream tasks: Classification on ModelNet40, Few-shot learning on ModelNet40, Transfer learning on ScanObjectNN and Part segmentation on ShapeNetPart.
 
 #### ModelNet40
 To finetune a pre-trained Point-BERT model on ModelNet40, simply run:

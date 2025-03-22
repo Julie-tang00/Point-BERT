@@ -13,7 +13,7 @@ The overall directory structure should be:
 │   ├──shapenetcore_partanno_segmentation_benchmark_v0_normal/
 ├──.......
 ```
-**ModelNet Dataset:** You can download the processed ModelNet data from [[Google Drive]](https://drive.google.com/drive/folders/1fAx8Jquh5ES92g1zm2WG6_ozgkwgHhUq?usp=sharing)[[Tsinghua Cloud]](https://cloud.tsinghua.edu.cn/d/4808a242b60c4c1f9bed/)[[BaiDuYun]](https://pan.baidu.com/s/18XL4_HWMlAS_5DUH-T6CjA )(code:4u1e) and save it in `data/ModelNet/modelnet40_normal_resampled/`. (You can download the offical ModelNet from [here](https://shapenet.cs.stanford.edu/media/modelnet40_normal_resampled.zip), and process it by yourself.) Finally, the directory structure should be:
+**ModelNet Dataset:** You can download the processed ModelNet data from [[Google Drive]](https://drive.google.com/drive/folders/1fAx8Jquh5ES92g1zm2WG6_ozgkwgHhUq?usp=sharing)[[Tsinghua Cloud]](https://cloud.tsinghua.edu.cn/d/4808a242b60c4c1f9bed/)[[BaiDuYun]](https://pan.baidu.com/s/18XL4_HWMlAS_5DUH-T6CjA )(code:4u1e) and save it in `data/ModelNet/modelnet40_normal_resampled/`. (You can download the official ModelNet from [here](https://shapenet.cs.stanford.edu/media/modelnet40_normal_resampled.zip), and process it by yourself.) Finally, the directory structure should be:
 ```
 │ModelNet/
 ├──modelnet40_normal_resampled/
@@ -53,7 +53,7 @@ The overall directory structure should be:
 │  └── test.txt
 ```
 
-**ScanObjectNN Dataset:** Download the offical data from [here](http://103.24.77.34/scanobjectnn) (update: terms of use form required before get the download link, check [here](https://docs.google.com/forms/d/e/1FAIpQLSc6tXkTIBkxIgnjOyK-KKj6s2nLBOzJTQdSdlCDHii0C0bhpw/viewform)) and unzip it into `data/ScanObjectNN`. The directory structure should be:
+**ScanObjectNN Dataset:** Download the official data from [here](http://103.24.77.34/scanobjectnn) (update: terms of use form required before get the download link, check [here](https://docs.google.com/forms/d/e/1FAIpQLSc6tXkTIBkxIgnjOyK-KKj6s2nLBOzJTQdSdlCDHii0C0bhpw/viewform)) and unzip it into `data/ScanObjectNN`. The directory structure should be:
 ```
 │ScanObjectNN/
 ├──main_split/
@@ -67,7 +67,7 @@ The overall directory structure should be:
 ```
 
 
-**ShapeNetPart Dataset:** Download the offical data from [here](https://shapenet.cs.stanford.edu/media/shapenetcore_partanno_segmentation_benchmark_v0_normal.zip). Unzip the file under `data/shapenetcore_partanno_segmentation_benchmark_v0_normal/`. The directory structure should be
+**ShapeNetPart Dataset:** Download the official data from [here](https://shapenet.cs.stanford.edu/media/shapenetcore_partanno_segmentation_benchmark_v0_normal.zip). Unzip the file under `data/shapenetcore_partanno_segmentation_benchmark_v0_normal/`. The directory structure should be
 
 ```
 |shapenetcore_partanno_segmentation_benchmark_v0_normal/
